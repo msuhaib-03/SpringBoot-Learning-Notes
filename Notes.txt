@@ -1,0 +1,72 @@
+
+NOTES WRITTEN BY MUHAMMAD SUHAIB
+LINKEDIN : linkedin.com/in/msuhaib-03/fsjavadev/
+mail: muhammadsuhaib2805@gmail.com
+
+
+
+------------------------------------ LECTURE 1 -------------------------------------
+Spring Boots is framework for bulding application in Java --> it basically provides tools
+Easy to create stand-alone, production-grade Spring Based Applications 
+
+Spring framework reduce boilerplate code, reduce effort to setup and config Spring Application.
+Auto-config & StandAlone App, No need for Tomcat server, No need to config any server or its config !!
+
+Annotation is a hint and @SpringBootApplication replaces need for setting Spring Application manually.
+It comes with a lot of automatic configuration
+Spring	Application.run() to start the application
+
+Bean can be reused. --> Bean is an object
+ApplicationContext is asked to provide bean. ---> It creates and provides you bean
+
+------------------------------------ LECTURE 2 -------------------------------------
+
+Download & Installation of IntelliJ
+Adoptium Eclipse
+
+------------------------------------ LECTURE 3 -------------------------------------
+
+Java8 & Java11 are the most stable
+We will do version upgrade as well later on which is work of developer.
+
+------------------------------------ LECTURE 4 -------------------------------------
+
+Spring Boot Project ( Journal App )
+jar is run just like that where as war has to be deployed on external server
+Spring Initializer
+Maven helps to convert to jar or war
+Add Dependencies --> Spring Web for APIs & uses Apache Tomcat Server
+Added RestController to for  @GetMapping for context on localhost:8080
+
+
+------------------------------------ LECTURE 5 -------------------------------------
+
+Download & Install maven
+
+------------------------------------ LECTURE 6 -------------------------------------
+
+Maven creates build --> build simplify, automate, dependency manage
+All jars are available and downloaded & used
+
+Maven repository has all the dependencies you need for your project, it will download the jar in external libraries ---> Dependency
+
+validate, compile, test, package, verify, install, deploy ---> Build lifecycle of Maven
+
+Make sure to be in the same folder as project where all the files and folders are lying
+mvn validate, mvn compile, mvn test, mvn package( no need to write all the commands again and again, just package is enough for all work) will make jar,
+mvn install ( this creates a path where the jar will be stored and can be used again in future ), mvn clean ( removes all that was present or created using mvn )
+java -jar <file name of jar in target folder>  --> runs project
+
+
+------------------------------------ LECTURE 7 -------------------------------------
+
+
+
+
+
+
+
+
+
+
+
