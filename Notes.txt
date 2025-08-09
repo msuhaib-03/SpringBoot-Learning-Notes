@@ -55,15 +55,101 @@ validate, compile, test, package, verify, install, deploy ---> Build lifecycle o
 Make sure to be in the same folder as project where all the files and folders are lying
 mvn validate, mvn compile, mvn test, mvn package( no need to write all the commands again and again, just package is enough for all work) will make jar,
 mvn install ( this creates a path where the jar will be stored and can be used again in future ), mvn clean ( removes all that was present or created using mvn )
+
 java -jar <file name of jar in target folder>  --> runs project
 
+pom means build tool is maven
 
 ------------------------------------ LECTURE 7 -------------------------------------
 
+.idea --> intellij related config
+.mvn --> maven wrapper
+src -> main ( functionality )
+src -> test ( testing )
+pom.xml --> all info related to project, external libraries
+
+plugin, build --> packaging code to jar or war 
+
+parent fetch required dependencies 
+
+.jar.original only has compiled code
+.jar has the plugins, dependencies, compiled code, self-contained server ( self-contained jar) --> fat jar
+
+mvn package also does the repackaging, repackages the original jar and jar
+
+------------------------------------ LECTURE 8 -------------------------------------
+
+We used to manually create object i.e: car c = new car();
+Externalize the object creation --> Inversion of Control  ( Spring provides IOC Container ) 
+All the classes in project are stored in IOC Container, no need to create object, it wil be done by IOC.
+
+Control is inverted, all the objects are present in a box called IOC.
+ApplicationContext is a way to apply IOC. 
+
+IOC scans the classes but adds only those which contain:
+@Component, --> if this annotation is present at any class, IOC will accept and save this class in it.
+Class,interface,method,field. ( @ tells some info about those )
+
+@Component makes Beans
+Bean -> object
+The object in IOC container is called Bean.
+
+@SpringBootApplication -> it runs the entire project, it is entry point and main method ( it is only 1 and it is only going to be on main class )
+All the classes, beans must be made in base class / package, oonly then it could be scanned by SpringBootApplication
+It contains 3 Annotations:
+@Configuration --> Bean creation of that class
+@EnableAutoConfiguration --> There's no need to setup things manually, spring boot does it all by itself i.e mongo db setup, server setup
+@ComponentScan --> IOC Container / Scanning / Scan Beans
+
+@Autowired, --> dependency injection
+if a class needs to be used in another class, the one we want to use, write the @Autowired annotation on it, so its called dependency injection.
+There's no need to make object, it gives direct access to that class's objects, methods, interface.
+By using it, any calss in future can use this single instance
+
+@Bean, --> this can be used to crate bean in a class but it is only used on a function
 
 
+------------------------------------ LECTURE 9 -------------------------------------
 
+New SpringBoot Project creation.
 
+Spring Initializer:
+Lang -> Java
+Project -> Maven
+SpringBoot -> ( select older version )
+Group: Name of company in reverse fashion
+Artifact: Name of project ( must begin with lowercase )
+Name: ( Any name -- must be human-readable )
+Description: ( Any description )
+Packaging: Jar
+Java : ( Select older version, either one installed in your pc or a little above your version )
+Dependencies: Spring Web
+
+Representative State Transfer & Application Programming Interface
+REST API --> How to access something on server , therefore ( GET + 172.17.18.19:8080/netflix/plans ) 
+URL+Endpoint( 122.76.0.45:8080 + /plans/pricing )
+
+URL + HTTP Verb
+GET, PUT, POST, DELETE ( See, Modify, Create, Remove )
+
+@RestController at class will be a Bean --> it is used as a component but providing some additional functionality as well
+End-points are written as method
+
+Postman is used to check API
+@RequestMapping adds mapping to entire class and then finds the sub mappings in that class
+Methods inside a controller class should be public so that they can be accessible and invoked by the spring framework or external http requests.
+Selecting "raw" and "JSON" in body of POST request in Postman indicates that request body will contain data in JSON format, allowing the server to parse and process
+the incoming data accurately.
+
+@RequestBody in a parameter of function is like: hey spring, take the data from the request and turn it into java object that I can use in my code
+@PathVariable --> have to give the path to the endpoint for api hit
+
+? --> this is request parameter
+/ --> this is path variable
+
+:)
+
+------------------------------------ LECTURE 10 -------------------------------------
 
 
 
