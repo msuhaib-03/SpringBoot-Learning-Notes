@@ -151,6 +151,146 @@ the incoming data accurately.
 
 ------------------------------------ LECTURE 10 -------------------------------------
 
+MongoDB installation on Windows.
+
+------------------------------------ LECTURE 11 -------------------------------------
+
+MongoDB is database and it has collection not table.
+Collection has fields(columns) and rows(documents).
+
+Run cmd as an administrator and type mongosh.
+show dbs
+use <name of db to create>
+show collections  --> no tables created yet.
+db.createCollection <name of table>
+db.students.insertOne({"name":"Sobi", "age":22})
+db.students.insertOne({"name":"Rabiya", "age":27})
+
+What it is actually doing is that it goes to current selected database,create a table if not like here <students> and then write the rows as JSON.
+
+db.students.find() ---> show the data in the table
+db.students.find().pretty() ---> show in a proper manner of documents(rows)
+db.students.find({name:"Rabiya"}) --> It finds exact field through JSON
+db.students.deleteOne({name:"Suhaib"})
+
+
+------------------------------------ LECTURE 12 -------------------------------------
+
+ORM --> ( Object Relational Model ) : technique used to map java objects to database tables
+Allows devs to work with database using OOP, making it easier to interact with relational database.
+
+Consider a Java class called Users and db called users. ORM maps the fields in User class to columns in the users table, making easier to insert,upd,del,retrieve.
+
+JPA ---> Java Persistence API 
+Provide set rules to achieve ORM
+
+Persistence Provider / ORM Tools ---> To use JPA, you need persistence provider.
+JPA persistence providers include Hibernate, EclipseLink and OpenJPA.  ( You will use JPA but by which means you want to use JPA )
+We use these to interact with our databases
+
+Spring Data JPA --> It simplifies working with JPA. You will still need a JPA provider.
+
+MongoDB is a NoSQL database that uses a different data model, typically based on collections of documents, which are schema-less or have flexible schemas.
+JPA is not used with MongoDB.
+As it is a NoSQL database so SpringData JPA serves as the persistence provider for MongoDB.
+
+QueryMethodDSL & CriteriaAPI are 2 diff ways to interact with database:
+SpringDataJPA for Relational database.
+SpringData MongoDB for MongoDB Database.
+
+QueryMethodDSL: create queries based on method naming conventions
+CriteriaAPI : dynamic & programmatic approach for complex and custom queries
+
+
+------------------------------------ LECTURE 13 -------------------------------------
+
+Add springdb mongodb dependency in pom.xml
+
+Goto application.properties in resources folder and provide this info:
+pring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+
+This local host and port can vary if you work at office or somewhere.
+
+Now create a package called service and class within it which will hold all the business logic here.
+We will also create a an interface of repository within a repository package
+
+Controller calls the service, service calls repo.
+controller ---> service --> repo(interface)
+
+Repo runs query from database. The database that you wanna play with, extends that in repo interface.
+extends MongoRepository
+MongoRepository is an interface provided by default SpringDataMongoDB contains the code for table(collection) when ctrl+right-click.
+It will contain 2 parameters.
+
+@Document to be written on our pojo class to make it equals to row for db. ( The pojo class will be equal to 1 row containing all fields in it)
+@Id makes an initialization unique/primary key.
+
+In the v2 controller, we @AutoWired the JourmalEntryService so no need to rewrite it for object.
+
+Now run the program and hit the postman with a text body with json to check if POST verb is working.
+Then Open the mongosh and hit show dbs, then use journaldb, show collections --> ( journalEntry is shown )
+db.journalEntry.find() ---> just show the data we hit from POST in Postman
+If you don't have or enter id, mongoDB itself generates a variable of ObjectID with a unique id for each document.
+You may delete the entries from table now in mongosh and goto JournalEntry class and convert the String Id to ObjectId.
+Add LocalDateTime as well.
+Optional is data type where there could be data and there could not be.
+
+Create all the services in journalEntryService --> All what you need, Save, Update, List, Create
+JournalEntry has all the ---> Variables declared with getters and setters.
+JournalEntryRepo extends MongoRepository and nothing else in code.
+JournalEntryController is where you hit the APIs and use @RestController with all the HTTP Verbs for the services you need.
+
+In the JournalEntry, where you wrote @Document(collection="journal_entries")
+you have to use the same document is mongosh for accessing it.
+Like: db.journal_entries.find()
+
+ALHAMDULILAH!!!! Troubleshooted the problem in IntelliJ & Mongosh by self after analyzing the errors generated and help from GPT.
+APIs are being hit now .. :)
+
+------------------------------------ LECTURE 14 -------------------------------------
+Request & Response
+Response Entity + HTTP Code
+3 digit numeric code returned by a server. These are used to convey information about the result or status of requested operation.
+HTTP Codes
+1xx --> Information ( request was received and understood & processed, rarely seen in practice )
+2xx --> Successful ( request was successfully received, understood & processed by the server ) -> 200,201,204
+3xx --> Redirection ( further action needed to complete the request. Used when client needs to take additional action to access the requested resource ) -> 301(Resource
+has been permanently moved to a different URL), 302( Resource Temporarily moved to a different URL, Redirect field alsi given), 304(Cached version can be used)
+4xx --> Error on client's part, authentication issues, 400(Bad Request), 401(Unauthorized), 403(Forbidden)
+5xx --> Server Error ,500(Internal Server Error), 502(Bad Gateway). 503(Service Unavailable/temp overloading or maintenance)
+
+Response Entity class is a part of Spring Framework and is commonly used in SpringBoot apps to customize HTTP response.
+Provides methods for setting reponse status,header & body.
+Make changes in the JournalEntryController and add the ResponseEntity with status codes. 
+
+
+
+------------------------------------ LECTURE 15 -------------------------------------
+
+Lombok is popular library in Java ecosystem, often used in SpringBoot apps. It aims to reduce boilerplate. Lombok achieves this by generating this code automatically
+during compilation based on annotations you add to your Java class.
+
+Goto Project Lombok, select install ( maven ) and add the dependency to pom.xml
+
+In your entity vlass where you need to do the work reduction, add the annotations there like:
+@Getter, @Setter, @Builder, &EqualsandHashCode, @ToString
+Also install plugin of Lombok in intelliJ
+But @Data annotation of Lombok is equals to all the above written annotations,it includes all of them.
+Lombok generates bytecode for methods as speicifed by the annotations used in your code. This generated code is added to the compiled class files (.class).
+
+Java cmopiler compiles your classes, including the generated code. This means that the generated methods become part of your compiled class files.
+When you run your app the generated methods are available for use, just like any other method in your class.
+
+
+
+------------------------------------ LECTURE 16 -------------------------------------
+
+Creating a connection between JournalEntry & User
+@DBRef to make a link of a database into another one, and it works as a foreign key. JournalEntries in our project is making a reference, link making between 2 collections.
+Parent-child relationship is established here. 
+
+
 
 
 
