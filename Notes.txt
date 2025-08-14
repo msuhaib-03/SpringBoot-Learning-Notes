@@ -288,7 +288,43 @@ When you run your app the generated methods are available for use, just like any
 
 Creating a connection between JournalEntry & User
 @DBRef to make a link of a database into another one, and it works as a foreign key. JournalEntries in our project is making a reference, link making between 2 collections.
-Parent-child relationship is established here. 
+Parent-child relationship is established here in User.java class
+spring.data.mongodb.auto-index-creation=true  --> This has to be added to application.properties for username indexing
+Make a UserController,UserRepo,UserService same as the journal classes but do work as following the service class
+In UserRepo make a method of username.
+
+Now to create a connection betwwen the User & Journal, we will start wokring on the JournalControllerV2. 
+Do the Autowire UserService class in JournalEntryController and use @PathVariable to find userName.
+All the journalEntriesof that particular user will appear.
+
+UserName + journalEntry --> API 
+userName comes from user and user has id,username,password and journal entries.
+journalEntry has journalEntries.
+Id is saved in journalEntries of journalEntry.
+So this API makes enter journalEntry into journalEntries & it also saves the user's journalEntries's id from users.
+
+Everything good till now!!! Get,Post,Put,Delete working and their connection of users and journal_entries are also working as expected.
+Working on cascade mongodb as deleting an entry from journal_entries doesn't delete from the user, it is stil there automatically, therefore has to be done manually now.
+
+Done the work  on JournalEntryService for deletion.
+Create JournalEntry on postman:
+localhost:8080/journal/<userName>   --> POST method
+db.journal_entries.find()  --> entry created
+db.users.find() --> entry also created here
+
+Deletion on postman:
+localhost:8080/journal/id/<userName>/<objectid from journal_entries>
+db.journal_entries.find() --> entry is deleted
+db.users.find() --> entry deleted from here too
+
+Consistency will  come on users' next save but we want it currently delete, delete instantly. 
+
+Now all the HTTP verbs are working and connection/relation made between users and journal_entries collection.
+
+Problem here is that the transaction between the users and journal_entries has to be same all the time and at the same times. If any error occurs in saving journalEntry,
+it is going in JournalEntry and Users collection as well, it should occur as one operation.
+
+------------------------------------ LECTURE 17 -------------------------------------
 
 
 
