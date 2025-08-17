@@ -183,6 +183,7 @@ Consider a Java class called Users and db called users. ORM maps the fields in U
 
 JPA ---> Java Persistence API 
 Provide set rules to achieve ORM
+It acts as a bridge between OOP & relational database.
 
 Persistence Provider / ORM Tools ---> To use JPA, you need persistence provider.
 JPA persistence providers include Hibernate, EclipseLink and OpenJPA.  ( You will use JPA but by which means you want to use JPA )
@@ -207,7 +208,7 @@ CriteriaAPI : dynamic & programmatic approach for complex and custom queries
 Add springdb mongodb dependency in pom.xml
 
 Goto application.properties in resources folder and provide this info:
-pring.data.mongodb.host=localhost
+spring.data.mongodb.host=localhost
 spring.data.mongodb.port=27017
 
 This local host and port can vary if you work at office or somewhere.
@@ -325,6 +326,54 @@ Problem here is that the transaction between the users and journal_entries has t
 it is going in JournalEntry and Users collection as well, it should occur as one operation.
 
 ------------------------------------ LECTURE 17 -------------------------------------
+
+@Transactional -->  will be used in case of transaction where if one succeeds, means all will succeed, but if one is wrong or discarded then all will be discarded.
+
+@EnableTransactionManagement --> it is added on main SpringBootApplication.
+What happens here is that it creates a container, which contains all the methods that have @Transactional annotaion used on it and it provides the area for springboot
+application to search and make the application and transaction atomic( if one fails, all will fail, if one passes, all will pass )
+Isolation is also achieved by using it. 
+
+All of it is basically done by an Interface PlatformTransactionManager which is responsible for transactions, commit & rollback.
+MongoTransactionManager is class which implements it. --> it is all wokring behind.
+A @Bean of platformtransactionmanager is created in main app which has mongodatabasefactory as param & return instance of mongotransactionmanager.
+MongoDatabaseFactory( an interace ) helps is building connection with the database --> used as parameter in method of PlatformTransactionManager.
+And it is an implementation of SimpleMongoClientDatabaseFactory.
+
+You can also create a package with class TransactionConfig for the above mentioned things rather than creating them in main SpringBootApplication but we will keep it.
+
+
+------------------------------------ LECTURE 18 -------------------------------------
+
+Create an account on MongoDB Atlas.
+Do the personalization, and select the free plan.
+Select AWS as Provider & Region as you like and then create Deployment after giving it a name.
+wQ1OeNgvdP8VnIfA (password), muhammadsuhaib2805 (username)
+
+mongodb+srv://muhammadsuhaib2805:<db_password>@cluster0.9wu5ofl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0 ---> ( paste in springboot project )
+This is obtained from the connect button & then drivers option.
+
+Don't forget to hit add my current ip address to make it whitelist for use in Quickstart Security option.
+Finish & Close.
+
+Cluster is a formation from nodes means servers. Data is evenly distributed so if a server goes down, data can be fetched through another( It is called sharding ). 
+
+Paste the uri in springbootapp in application.properties with:
+spring.data.mongodb.uri=mongodb+srv://muhammadsuhaib2805:wQ1OeNgvdP8VnIfA@cluster0.9wu5ofl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+This is hard-coded and not a good practice tho for now but we will externalize it later.
+
+___________________________ SERIOUS PROBLEM OCCURED HERE!!!!! JAVA VERSION 8 IS NOT COMPATIBLE WITH CURRENT SPRINGBOOT VERSION THEREFORE IT IS NOT GOING TO RUN
+ANYTHING ON MONGODB ATLAS. IT TOOK A LOT OF HOURS AND TROUBLESHOOTING TO KNOW WHAT WENT WRONG. DOWNLOAD JAVA 17 NOW, SET JDK, SDK___________________________
+
+
+
+------------------------------------ LECTURE 19 -------------------------------------
+
+SpringSecurity class download. Only applies to latest users of springboot with ver 3.x and above.
+
+
+------------------------------------ LECTURE 20 -------------------------------------
+
 
 
 
