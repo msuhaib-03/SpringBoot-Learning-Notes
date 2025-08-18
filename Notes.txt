@@ -348,7 +348,7 @@ You can also create a package with class TransactionConfig for the above mention
 Create an account on MongoDB Atlas.
 Do the personalization, and select the free plan.
 Select AWS as Provider & Region as you like and then create Deployment after giving it a name.
-wQ1OeNgvdP8VnIfA (password), muhammadsuhaib2805 (username)
+(password), (username)
 
 mongodb+srv://muhammadsuhaib2805:<db_password>@cluster0.9wu5ofl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0 ---> ( paste in springboot project )
 This is obtained from the connect button & then drivers option.
@@ -359,13 +359,22 @@ Finish & Close.
 Cluster is a formation from nodes means servers. Data is evenly distributed so if a server goes down, data can be fetched through another( It is called sharding ). 
 
 Paste the uri in springbootapp in application.properties with:
-spring.data.mongodb.uri=mongodb+srv://muhammadsuhaib2805:wQ1OeNgvdP8VnIfA@cluster0.9wu5ofl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+spring.data.mongodb.uri=mongodb+srv://sobi7:<db_password>@cluster0.ar8adhd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 This is hard-coded and not a good practice tho for now but we will externalize it later.
 
 ___________________________ SERIOUS PROBLEM OCCURED HERE!!!!! JAVA VERSION 8 IS NOT COMPATIBLE WITH CURRENT SPRINGBOOT VERSION THEREFORE IT IS NOT GOING TO RUN
 ANYTHING ON MONGODB ATLAS. IT TOOK A LOT OF HOURS AND TROUBLESHOOTING TO KNOW WHAT WENT WRONG. DOWNLOAD JAVA 17 NOW, SET JDK, SDK___________________________
 
 
+DAYSS AND DAYSSS PASSED!!!!! FINALLY TROUBLESHOOTED THE PROBLEM, IT WAS THE PROXY THAT WAS STOPPING US TO CONNECT, EVERYTHING WAS FINE, THE CONNECTION STRING, THE
+SPRING BOOT PROJECT :)
+TOOK APPROX 3 DAYS TO KNOW WHY IS IT HAPPENING AND DID ALL ON MY OWN, NO HELP FROM TUTORIALS OR GPT...
+
+
+Connection String would look something like this:
+mongodb+srv://sobi7:<db_password>@cluster0.ar8adhd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+I recommend doing all the stuff on Studio3t and it can be connected to MongoDB Atlas
 
 ------------------------------------ LECTURE 19 -------------------------------------
 
@@ -373,6 +382,61 @@ SpringSecurity class download. Only applies to latest users of springboot with v
 
 
 ------------------------------------ LECTURE 20 -------------------------------------
+
+Spring Security is a powerful framework that is used to handle authentication & authorization. ( who to allow and whom to not, right credentials ) & ( if access, what can you do, admin/read/write access )
+
+A dependency is added in pom.xml to secure all the end-points, it uses HTTP Basic Authentication. (encoded-string)
+The client sends an authorization header --> Authorization: Basic encoded String, The server decodes thr string, extracts username & password and verifies them.
+Access is granted, if they are correct.
+username:password  --> it is encoded in base64
+Spring Security will generate a default user with a random password that is printed in console logs.
+
+Run you Spring app & a passowrd will be generated
+Goto postman, hit any GET journalentry and then hit send, it will say 401 Unauthorized, goto auth -> basic auth, type username and the password from springboot and hit send.
+( Remember that this username & password is different from the users we created )
+Now it will show authorized and an OK Status with your entry in response.
+
+Now we need Customize Authentication because it was only done for a single user.
+@EnableWeb@Security --> Web Security support is enabled. It's used in conjunction with @Configuration
+WebSecurityConfigureAdapter is a utility class that provides default configurations & allows customization of certain features. By extending it, you can configure &
+customize your spring secity for your application needs.
+
+http.authorizeRequests --> starts authorizing the requests
+.anyMatchers("/hello").permitAll --> HTTP request matching the part hello should be allowed for all users whether auth or not
+.anyRequest().authenticated() --> Specifies any request, not matched by previous matchers should be authenticated, meaning users have to provide valid credentialsto access the endpoints.
+.and() --> method to join several configurations.
+.formLogin() --> Enables form-based authentication. It will provide a form for the user to enter their username and password. If user is not authenticated and try to access a secure endpoint, they'll be 
+redirected to the default login form.
+Spring security provides an in-built controller that handles /login path. It is responsible for rendering the default login form when a GET request is made to /login.
+Spring also provides logout functionality. .logout(), post request to /logout will log the user out & invalidate their session.
+
+Basic Authentication is by its design stateless. ( 2nd request doesn't know, what was 1st request ) , All 100 requests are made individually.
+
+Spring Security:
+Session Creation
+Session Cookie
+Security Context
+Session Timeout
+Logout
+Remember Me
+
+We want our SpringBoot application to authenticate users based on their credentials stored in a MongoDB database.
+Users and passwords(hashed) will be stored in mongodb & when users try to authenticate, system checks for provided creds and match against what's in the db.
+
+Now we have to create a UserDetailsServiceImpl which is other than our business logic and it is an implementation of an interface with methods already defined.
+
+Make changes, as the Public Controller now has the ability to add user, and UserController deletes and updates user.
+All authentication done, some testing through postmn required!!
+
+
+
+------------------------------------ LECTURE 21 -------------------------------------
+
+
+
+
+
+
 
 
 
