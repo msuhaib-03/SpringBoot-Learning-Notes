@@ -433,6 +433,16 @@ All authentication done, some testing through postmn required!!
 ------------------------------------ LECTURE 21 -------------------------------------
 
 
+We will be working on Journal Entry Controller and will add authentication to it and then there's no need for @PathVariable as we are sending userName and password
+through auth and can be checked in Postman.
+Goto Postman and localhost:8080/journal and select Auth and then BasicAuth, provide the username and password.
+It was done for GetMapping, now do same for PostMapping, add those 2 lines of authentication and remove any pathvariable.
+
+Postman was giving unauthorized error, it can be solved by right providing the username and password in auth and make sure its encrypted and not plain text format
+and also for this project there's no need to use @Transactional, it took couple of hours for me to know where the actual problem lies.
+Either remove it or use the Mongodb Factory for it.
+Now its working very fine!!!! :)
+Check the mongodb atlas collections and there will be users and journal_entries under the journaldb collection with the entity having same id.
 
 
 
