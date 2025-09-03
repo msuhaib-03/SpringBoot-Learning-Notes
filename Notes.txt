@@ -444,8 +444,72 @@ Either remove it or use the Mongodb Factory for it.
 Now its working very fine!!!! :)
 Check the mongodb atlas collections and there will be users and journal_entries under the journaldb collection with the entity having same id.
 
+CreateUser, then Add journal entry and then get by id.... Make sure to use the basic auth & provide the raw username and password.
+Delete the journal entry as well by providing the id from Mongodb Atlas and it should be removed overall.
+
+ALL HTTP VERBS ARE WORKING AND ALL DONE WORK ON GET,PUT,POST,DELETE & BY THEIR RESPECTIVE IDS.
+Checked on MongoDB Atlas as well. Authorization done by raw format and object id taken from mongodb for id.
 
 
+------------------------------------ LECTURE 22 -------------------------------------
+
+Role Based Authorization is done here. A new API and controller is created for admin so only admin can see all users and entries while common users can't have access
+and wouldn't be able to see the changes and all users and can't use someone's auth.
+
+We will create an a new admin controller which will fetch all the details, but before that we have to make a change(already done) in spring security by adding role of
+admin as has Role for a specific role.
+So to allow a specific person to be able to see or make changes, goto mongodb atlas and the user you want to make an admin and edit its user entry and type ADMIN in it.
+By updating and editing the role of a specific user, enter its basic auth in Postman and boom!! You can see all the entries and at the same time if you try to enter
+anyone else's basic auth, it will say 401 Unauthorized.
+
+We have to create first user and admin manually so we can create or change after and even make a method to create new admin in the controller and UserService as well
+by giving it role of a USER as well as an ADMIN as given in the SpringSecurity class. 
+So basically this manually created admin can further create an admin and that admin will also be able to see users and entries by enabling its username and password
+as auth just like the first admin.
+
+Basically by creating a new user first and then, first manual admin, you will create a new admin from its basic auth, then the created admin will use its raw username
+and password in get all to see all
+the entries and users
+
+------------------------------------ LECTURE 23 -------------------------------------
+
+In this lecture we will see if there's any other way to write or handle application.properties as we had been writing our setting in it, so we can try to pass
+command line arguments in spring boot application.     ----> Basically a YAML lecture... !
+
+Classpath has jars, class and configuration files.
+SpringBoot finds itself the class path, src --> main --> resources --> application.properties
+Dependenceis are also packaged in classpath.
+
+So another way to write configs is YAML.
+It doesn't need to have tags rather it is human readable and has indentation.
+YAML aint't markup language !! :)
+.yml is extension.
+
+Copy paste that same app.properties but use .yml. Now use this sort of indentation and we don't need to over write things and again and again.
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://sobi7:test1234@cluster0.ar8adhd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: journaldb
+      auto-index-creation: true
+
+You have to write a new property from starting and just use : and hit enter to move to next line. Intellij is smart and can recognize.
+You can keep poth .properties and .yml but priority is application.properties.
+
+You can provide context path and port of your choice as well but remember that context path then has to be added before every api here in this case of project, /journal
+and port can be changed from 8080 to 8081 and would work fine.
+application.properties can be deleted now and project would work.
+
+Now almost same can be done in terminal, just write mvn package and then in test you can see jar and can run it by java -jar <name of jar> --property=value
+So you can use properties in terminal as well.
+So priority is:
+application.properties
+command line terminal
+application.yml
+
+
+------------------------------------ LECTURE 24 -------------------------------------
 
 
 
