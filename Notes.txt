@@ -511,10 +511,74 @@ application.yml
 
 ------------------------------------ LECTURE 24 -------------------------------------
 
+JUnit TESTING IN THIS LECTURE!!
+API has to be tested. Unit & Component Testing.
+Java Unit is a framework for testing -->Java Unit
+All tests have to be written in tests, maven ignores test folder so it is not included in jar.
+
+You can write tests as methods and class name can be same as the ones from main.
+Make a package called service for example in test and add class UserServiceTests.
+
+@Test ---> This annotation is used on methods that we need to test
+assertEquals()  --> this contains parameters for expected and actual value, you can run and check if this is true. This will be imported as static import.
+
+assert ---> there are couple of option after you write assert and you can choose what to test in what context.
+You can also add a message after providing parameters in test by comma separated so it tells, which test actually failed.
+
+Now we try to test findByUsername from UserService and we @Autowire userRepo, make a method and use assertNotNull just to know that answer should not be null.
+Something like this: userRepo.findByUserName("username here that has been created.");
+
+Make sure to add
+@SpringBootTest --> this runs tests like actual project as there is no springboot app context in tests therefore without it, it will fail to run.
+
+@ParametrizedTest --> This annotation is used when you want to carry multiple tests on a single method with changing values and don't want to write method again & again.
+Values are fetched here and how they are fetched? They are fetched through another annotation where you can give files:
+@CsvSource({
+})
+Each line in csv represents one test for the parameters.
+"1,2,2",
+"2,10,12,
+"3,3,9"
+
+@ParameterizedTest
+    @CsvSource({
+            "1,1,2",
+            "3,3,9",
+            "4,5,13"
+    })
+    public void test(int a, int b, int expected){
+        assertEquals(expected, a+b);
+    }
+
+Now if we run a class and want to disable a test we have annotation for that too:
+@Disabled --> it disables the method that you don't want to test.
+
+@EnumSource --> another same as CsvSource
+@ValueSource ---> this annotation is almost same as CsvSource but as we are not giving any file, we can add ints, or strings to it follwed by = sign and then whatever
+you like to test.
+@ValueSource(strings = {
+"Taha",
+"Disha",
+"Sobi"
+})
+
+@ArgumentSource --> This is long and a little difficult to understand and part of JUnit testing & not exactly part of a SpringBoot therefore can be ignored & above
+provided tests can be implemented and are very effective.
+But it is basically used for custom arguments by making a new class of that implements ArgumentsProvider & a method @Override of Stream that extends ?Arguments
+and builder for testing the entity variables.
+
+Code coverage / tests ---> This is used to show or tell that how much of your project or lines of code have been tested so a plugin is installed called
+Code Coverage for Java. ( Not exactly available in this IntelliJ version )
+BTW it shows coverage in % when run on tests. It creates a report.
+You can export report as well.
+
+@BeforeEach ---> It will run before each test present. If we have to initialze something before each test, then this annotation has to be used.
+@BeforeAll ---> This method test will run before all & any.
+@AfterAll ---> This if used on a method will run after all the tests.
 
 
 
-
+------------------------------------ LECTURE 25 -------------------------------------
 
 
 
