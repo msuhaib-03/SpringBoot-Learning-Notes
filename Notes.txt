@@ -577,8 +577,68 @@ You can export report as well.
 @AfterAll ---> This if used on a method will run after all the tests.
 
 
-
 ------------------------------------ LECTURE 25 -------------------------------------
+
+@MockBean ---> this annotation is used to mock, actual service / dependency is mocked.
+Now eveytime entire application takes time, all things are injected and autowired, connection to database is made so it takes a lot of time, so to make things faster,
+we have to use mockito.
+Dummy things are made so a mock db can be made and the actual connection to real db is not made and no time is wasted.
+Before findind any specific username, we use the --> when, thenReturn
+
+@InjectMocks ---> Injects the mocked dependency
+We are doing all this because @Autowired was used, @SpringBootTest was used so they were loading the entire spring application for test purpose but here we want to mock
+things and not use the actual ones, therfore we have to remove @SpringBootTest and @Autowired so @Mock ( @MockBean is used with spring context only ) & @InjectMocks are
+2 annotations used for only working with mocks and not loading the spring boot application context whiich takes time to load. By doing so, we are preventing our tests
+classes and methods from being components.
+
+The application would still fail so we have to write a method of @BeforeEach, in which we initialize Mocks and inject them too.
+Now the initialization is done and our mock/fake test will run smooth and no actual connection will be made.
+
+
+
+------------------------------------ LECTURE 26 -------------------------------------
+
+Profiles --> Dev & Prod Environment
+Dev env is usually testing, fake users whereas prod env is real with real users.
+
+Difference comes in configurations when in Production Environment, SpringBoot gives us flexibilty of changing configurations based on Environment.
+By default we have application.config / application.yml, but we are creating 2 more here : application-dev.yml & application-prod.yml
+
+This is how you will write you application.yml first:
+spring:
+  profiles:
+    active: dev ( write name of profile you want to run, either dev or prod )
+
+You are basically running the application-dev.yml ---> which was actually copy pasted from application.yml and it was replaced with above code and it runs fine!!
+
+If there are exact same config in both of the profiles, you can write them in application.yml, rest of the changes are done in separate profiles.
+Rather than rewriting and changes dev / prod again and again, you can goto environment variables in IntelliJ and write spring.profiles.active=dev
+
+Now in production, you aren't going to use IntelliJ, you will run jar.
+
+You can do all the above things in the command line using maven and jar.
+.\mvnw clean package -D spring.profiles.active=dev   ---> jvm system properties
+&
+then moving to our target folder where jar is created, in command line:
+java -jar <name of jar > --spring.profiles.active=dev  ---> variables pass
+
+Jenkins do all the things automatically, no need to do all these things and it does everything by just a single click.
+We can whitelist the server that load everything from them so we set active profile of prod or dev as you like because server cannot be accessed by local machine, things
+work entirely different on server, therefore set profile either on environment variables or use Jenkins.
+
+Bean made based on profile.
+@Profile("dev")
+You can add annotation to a class so that it tells project if it belongs to dev or prod
+ 
+You can do the same for tests classes as well by adding an annotation:
+@ActiveProfiles("prod")
+
+You can get the environment context as well by initializing variables of spring application and using it with getEnvironment(), so on starting the project it shows 
+which profile is active or not.
+
+
+------------------------------------ LECTURE 27 -------------------------------------
+
 
 
 
