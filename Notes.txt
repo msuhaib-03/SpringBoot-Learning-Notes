@@ -639,6 +639,88 @@ which profile is active or not.
 
 ------------------------------------ LECTURE 27 -------------------------------------
 
+This lecture is regarding Logging.
+
+Logging is an essential aspect of application development that allows developerss to monitor & trouleshoot their applications.
+Unexpected behavior on production of API if crashed, we can check by LOGGING, either logs are printing or not.
+
+Logback, Log4j2 & Java Util Logging(JUL) ---> 3 frameworks are available in springboot.
+Logback: logging framework that offers flexible config & good performance & a default in spring boot apps.
+Log4j2: Async logging & support for various output formats.
+JUL: default logging standard in java standard edition. --> it's part of JDK.
+
+Usually we use logback. Simplicity & flexibilty in spring boot.
+
+To customize logging, you can create logback.xml file in src/main/resources.
+
+Logging levels: Help in categorizing log statements based on their severity.
+Trace, Debug, Info, Warn, Error
+
+Annotations used:
+@Slf4j ---> this will be used in springboot app & our project
+@Log4j2
+
+First initialize the logger instance in a class where you want to implement Log. We are doing in JournalEntryService. Like this:
+private static final Logger logger = LoggerFactory.getLogger(JournalEntryService.class);
+<use class where it is implemented>
+logger.error("Error occured for {} :",user.getUserName(),e); ---> this is how it is implemented when we have to initalize entire line above, but we can simply use
+annotation as well.
+@slf4j ---> when this annotation is used, there's no need to initialize that entire line of private static final. Just in catch bloack, use (log.), and it will work.
+
+simple logging facade for java.
+slf4j is logging abstraction framework. 
+
+Customization has to be done to make Trace and Debug run, the rest can run like that.
+
+This is how customization is done in application.xml for DEBUG and TRACE.    
+logging:
+  level:
+    net:
+      engineeringdigest:
+        journalApp: DEBUG
+
+But it is better to use .xml and not .yml because xml is basic for logging therefore that's what we are going to do.
+Appender means where do you want to print your logs. Console & File appender.
+Create a new file in resources called logback.xml and write the contents like this:
+<configuration>
+
+    <appender name = "myConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name = "myFileAppender" class="ch.qos.logback.core.FileAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+        <file>
+            journalApp.log
+        </file>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="myConsoleAppender" />
+        <appender-ref ref="myFileAppender" />
+    </root>
+
+</configuration>
+
+So info in this is customizable and modifiable, therefore no need to remember and learn it entirely.
+It's creating logs in File as well as on console as well.
+We have to give path to <file> outside of project. So that logs are pasted there in root directory in Windows and Linux.
+There's RollingFileAppender class and it has RollingPolicy which further contains fileNamePattern, maxFileSize & maxHistory.
+As it is seen that this .xml for logging is heavily customizable.
+
+
+
+------------------------------------ LECTURE 28 -------------------------------------
+
+
 
 
 
