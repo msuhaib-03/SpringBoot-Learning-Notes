@@ -720,8 +720,9 @@ As it is seen that this .xml for logging is heavily customizable.
 
 ------------------------------------ LECTURE 28 -------------------------------------
 
-
-
+Code Quality Check ---> SonarCube
+It can be installed either locally on a system or on its own SonarCloud.
+Code also has to be present on GitHub.
 
 
 
