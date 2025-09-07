@@ -717,12 +717,46 @@ There's RollingFileAppender class and it has RollingPolicy which further contain
 As it is seen that this .xml for logging is heavily customizable.
 
 
-
 ------------------------------------ LECTURE 28 -------------------------------------
 
-Code Quality Check ---> SonarCube
+Code Quality Check ---> SonarQube, SonarServer, SonarLint
 It can be installed either locally on a system or on its own SonarCloud.
 Code also has to be present on GitHub.
 
+Download SonarQube & extract it.
+Go to its folder, bin & sonarcube, hit and run. It will open an interface and username,password is admin.
+Goto your pom.xml and add the dependency for the same SonarQube you just downloaded.
+Goto your project terminal in IntelliJ and do mvn clean install sonar:sonar   ( make sure to disable the tests )
+Now goto your sonar app and you can refresh and see that our project is loaded and quality is checked. Sonar has rules in it that checks for bugs, vulnerabilities,
+coverage & tests and provide you overall quality of your project while giving you recommendations for improving it.
+
+You can also download SonarLint (a plugin in IntelliJ) --> SonarLint is not available now on IntelliJ, SonarQube is available, so we are going for it.
+Same rules in SonarLint are also available in SonarQube.
+
+SonarCloud --> signin to sonarcloud and it will redirect you to page where you can create manual setup for GitHub and make your project available on server through
+github. After all the config on sonarcloud.io  you will see the interface but nothing from your project, then from Choose your analysis method, choose GitHub Actions.
+It will lead through couple of steps and their description and details are also provided about where to do and how. Enter dependency in your pom.xml & then create a 
+yml like this .github/workflows/build.yml ( code already provided there on sonarcloud.io)
+Open your folder location, open Git Bash and you can write:
+git init
+Open .gitignore and add .yml & .log under ### STS ### & also add a folder /htmlReport under ### IntelliJ IDEA ###
+git status
+git add.
+git commit -m'first commit"
+git config --global user.email "that fake sonarcloud github email"
+git config --global user.name "that fake sonarcloud github name"
+git status
+create a new github repo & search for ..create a nwe repo on command line
+git remote add origin <that entire line from github page>
+git push origin master ( signin with browser)
+
+You can create that workflow and yml in command line as well.
+And there are some steps that you need to follow, so that you can completely see your project on SonarCloud through GitHub.
+
+SonarQube & SonarCloud are doing the same thing, but the difference here is only that Qube is directly integrated in IntelliJ and can be downloaded for integration
+whereas Cloud is available on server and to access it, you have to go through github actions.
+
+
+------------------------------------ LECTURE 29 -------------------------------------
 
 
