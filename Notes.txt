@@ -759,4 +759,44 @@ whereas Cloud is available on server and to access it, you have to go through gi
 
 ------------------------------------ LECTURE 29 -------------------------------------
 
+We will see External API Integration in SpringBoot in this video.
+
+Hit external API in code & get the response, everything that is done from Postman must be done from code for external API.
+For this lecture we will consume 2 APIs, one is weather & other is quotes.
+
+Well the platform ( theysaidso.com ) --> the one for quotes API, they are not providing free APIs now, but in video, they were free.
+Anyways if free, we get they key & register ourselves.
+An API token is generated, copy it.
+Now use another weatherstack.com ( it's free and generate the token and copy it )
+
+36cf53c9eeaed245d9798a0a38dd0e0b ---> API Key (weather)
+We will use api in springboot application.
+Just made a @GetMapping in UserController and now make a new request in the heading of user in postman. 
+Well you can check if your API is working on a browser but make sure that it is http because this API doesn't work on HTTPS. It looks something like this:
+http://api.weatherstack.com/current?access_key=36cf53c9eeaed245d9798a0a38dd0e0b&query=NewYork
+The documentation is already available on their website. 
+For that we will create a service called WeatherService and do our api work in it.
+
+Make a JSON to POJO online.
+Create a package api.response & create a class within it called WeatherResponse and paste the pojo in it.
+As you create it will be in snake format, you have to cover it in Camel format, to do that, you will write annotation above each attribute that needs to be changed:
+@JsonProperty("observation_time") --> the one seen on http website from json to pojo  ( it's basically a good practice, it would work anyway)
+while what we want is this entity: observationTime... ---> So we have to tell our program what to do about it.
+Now pass the pojo class in api class created above.
+
+Add an instance of RestTemplate in journalApplication & add @Bean annotation.
+
+Well it worked very fine on first try... ---> The problem is that Edge browser never lets run http, so you never know the response from api until unless you complete
+your work and hit it through postman.
+
+
+
+------------------------------------ LECTURE 30 -------------------------------------
+
+
+
+
+
+
+
 
