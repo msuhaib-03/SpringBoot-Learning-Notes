@@ -790,8 +790,56 @@ Well it worked very fine on first try... ---> The problem is that Edge browser n
 your work and hit it through postman.
 
 
-
 ------------------------------------ LECTURE 30 -------------------------------------
+
+PostMapping in this lecture of that same API through Postman but in our WeatherService class using only httpEntity.
+By a simple change and call, you can send the post call.
+
+HttpEntity<> httpEntity = new HttpEntity<>();
+ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.POST, httpEntity, WeatherResponse.class);
+
+You can also pass headers from your code as well that are shown in postman like this:
+HttpHeaders httpHeaders = new HttpHeaders();
+httpHeaders.set("key","value");
+
+
+------------------------------------ LECTURE 31 -------------------------------------
+
+APIs have become so important to learn because they help a lot in automation.
+PipeDream ---> tool to automate
+IIElevenLabs ---> Documentation for API, how to integrate, how to work with it.
+
+Goto elevenlabs.io/docs/api-reference/text-to-speech
+They have uploaded a jar to their server, they have exposed an endpoint so we can use.
+
+We have the parameters like: Header,Path,Query & Body...
+Their entire documentation is automated through api and everything is available and shown & ready to use with the http vers like GET,POST,PUT & DELETE.
+
+sk_0880246c3c47dcfb02cc00e82334585675ac48b7f917005d ---> its my api key & I've to use it on the platform.
+I've put the api key so it can be used as required when doing things with your API, I've generated text to speech & its awesome.
+We are doing doing all this using UI, but on the side a cURL is given, we can do things with it. Copy it and goto postman and import a new cURL. And you can see the 
+Headers & Body. On hitting send, You can get the response below...!!! And cool thing is that you can download it too...
+This API can be reused in code and only you can change text later on or view documentation for further cool options. 
+
+
+------------------------------------ LECTURE 32 -------------------------------------
+
+Till now we've been using these 2 annotations to create a bean:
+@Component
+@Bean
+
+Problem is coded in service. Actual code.
+You can use this annotation, for readibilty, to tell someone in future that this class is service and business logic is written in it. Any of them can be used now.
+@Service
+
+
+------------------------------------ LECTURE 33 -------------------------------------
+
+
+
+
+
+
 
 
 
