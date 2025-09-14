@@ -903,6 +903,90 @@ YESS ! Valid users are returned by method.
 
 You can make conditions where you can use .nin and in for not-included & included for allowing or not allowing any entity variable.
 
+
+@Autowired
+    private MongoTemplate mongoTemplate;
+
+    public List<User> getUsersForSA(){
+        Query query = new Query();
+        //query.addCriteria(Criteria.where("userName").is("Hassy"));
+//        query.addCriteria(Criteria.where("email").exists(true));
+//        query.addCriteria(Criteria.where("email").ne("").ne(null));
+        query.addCriteria(Criteria.where("email").regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z{2,6}$]"));
+        query.addCriteria(Criteria.where("sentimentAnalysis").is(true));
+        List<User> users = mongoTemplate.find(query, User.class);
+        return users;
+
+
 ------------------------------------ LECTURE 36 -------------------------------------
+
+Sending mail using code through IntelliJ.
+Gmail, SMTP is covered in this lecture.
+
+Add dependency of mail in pom.xml
+Create an EmailService class in service and Testclass as well in tests.
+Now we will be able to send email through JavaMailsender by Autowiring it, add email functionality in springboot application.
+You will also have to write application.yml like this:
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: email@gmail.com
+    password: xxxx xxxx xxxx xxxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+Secure transaction is done here but the thing to remember is that email should be valid and you don't put your actual password here, no hardcoding.
+Rather you will have to create a passkey / app / security key for this method as it provides functionality for some older version, but it's not working here because
+Google doesn't generate it now, and systems have become modern so security is very high yet passkeys cannot be generated directly through google and MicrosoftEdge won't 
+allow you to do through it.
+
+ @Autowired
+    private JavaMailSender javaMailSender;
+    
+    public void sendEmail(String to, String subject, String body){
+        try{
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(to);
+            mail.setSubject(subject);
+            mail.setText(body);
+            javaMailSender.send(mail);
+        }catch (Exception e){
+            log.error("Exception while sendEmail:", e);
+        }
+    }
+
+It's very easy as you can use the instance of mail. and it has variety of options to include.
+
+Well it was difficult, yet managed to setup the passkey by adding pin and password to laptop and other google services so passkey can be generated.
+In your google account settings --> Security --> App password ( You may find it difficult to get to it because at first it's not present there )
+Generate a new name and password, paste the password in your application.yml and send the mail.
+
+You can use 465 as 587 could usually be blocked by ISP or office or even your local machines.
+Make some changes to app.yml so it will work now:
+
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+
+It took some time to debug and troubleshoot but finally I've received mail from my test class.
+
+------------------------------------ LECTURE 37 -------------------------------------
+
+ 
+
+
+
+
+
+
+
 
 
