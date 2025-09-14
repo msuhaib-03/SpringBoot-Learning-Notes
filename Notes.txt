@@ -835,16 +835,74 @@ You can use this annotation, for readibilty, to tell someone in future that this
 
 ------------------------------------ LECTURE 33 -------------------------------------
 
+Our hard coded api key is not a good practice as it will be public in uploaded on server of github.
+We will write api key in yml --> application.yml & use it in our code.
+
+@Value annotation is used here. As we are entering our api key in application.yml therefore we will pass the property in paranthesis like this:
+@Value("${weather.api.key}")
+
+Not working because have to remove final as well as static.
+Static variable is related to class, not the instance.
+
+Your hard coded api has static & final keywords but when it is done in your application.yml, it has to be done through @Value & have to remove the static and final
+keywords for initializing that api key.
+
+------------------------------------ LECTURE 34 -------------------------------------
+
+@PostConstruct
+When implemented on a method, as soon as bean is created, immediately that method is invoked.
+
+If want to save api in a Database, we will make it save in a collection.
+We are going to make another collection for the sake of saving api, it means we are going to configure api in database as it is recently being used and we don't want it
+to be used through our code.
+
+Latency is increased, means one hop is increased when called from server and then it is hit in our code, so we will see another practice called application cache.
+It is used in frequently used & frequently changing config to database & then load that database inside your springboot application.
+
+We will create a package called cache and a class inside called AppCache and make it a bean by using @Component.
+Write a method and before that initialize a String Map.
+Now create a collection in MongoDbAtlas called config_journal_app. Create insert document and write the key value pair, in which the key is name and value contains
+the api value. The parameters have to be in the angular brackets like <apiKey> & <city>.
+
+Make a repository & pojo of our collection.
+Autowire the configjournalapprepo in AppCache class.
+Now what we are doing is that we are making it static not by keyword because it is now not coming from our MongoDB Atlas but loaded like a cache to a variable in 
+our springboot app just once.
+Yess... It's working perfectly fine!!
+
+More work could be done, just for good coding practices like creating enum, placeholders class but not necessary for your project...
+You can use clear cache so even if one time your api is loaded, it can be cleared using postman and in big projects if we do some changes in database we don't want our
+application to crash for say if we chaange our API, it still has to work because it is once loaded and cache could be cleared now and there will be no response from above
+written code but all response from lines of code below..
 
 
+------------------------------------ LECTURE 35 -------------------------------------
+ 
+MongoTemplate & Criteria.
+Till now we were interacting with our mongo through MongoRepository which contains the implementation & interfaces, which are generally autowired where they are used,
+but we have to be very careful about it because we are doing here Query Method & if name or param goes wrong, you won't be able to interact with your database and will
+need to check the documentation for it, so now we will learn Criteria.
+Create a new class in package repository called UserRepositoryImpl. Criteria & query goes hand in hand.
 
+A new annotaion is introduced here:
+@MongoTemplate --> This is class that is provided by spring data mongodb and automatically everything is done behind the scene. This provides abstraction, configured by
+springboot, no need to go to its implementation.
+Create 2 variables, email and boolean sentimentAnalysis in entity User class.
+In this UserRepoImpl, make a new variable & initialize in a method called Query and use it with .add to add things.
+We are using criteria which is making things a lot easier rather than just interface of Repo where there are chances of error.
+To interact with this new criteria, use mongoTemplate as autowired before with .find and query as param and class where you want to send.
 
+We are basically working here for sentiment ananlysis like by the end of week, a mail will be received by the user that how his mood was this entire week, for which
+we will use NLP later on.
+In this Criteria can be used for OR, AND by making an object of Criteria and using .orOperation / .andOperator with the statement being comma separated in them.
+By writing all this, we could reduce it by adding regular expression. So basically users must have valid email & their sentimentAnalysis must be true too.
 
+Now to go mongodb atlas and take 2 users in which, one of them contains right email format and other one with wrong and SA being true.
+Goto code and debug tests and methods for SA, run and check if users are available..
+YESS ! Valid users are returned by method.
 
+You can make conditions where you can use .nin and in for not-included & included for allowing or not allowing any entity variable.
 
-
-
-
-
+------------------------------------ LECTURE 36 -------------------------------------
 
 
