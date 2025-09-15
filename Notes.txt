@@ -980,13 +980,38 @@ It took some time to debug and troubleshoot but finally I've received mail from 
 
 ------------------------------------ LECTURE 37 -------------------------------------
 
- 
+If you want to automate things & they are done on regular interval, so using Crons & Schedulers you can achieve this automation.
+Now we will send our users sentiment analysis every sunday morning 9am, now it's not done through manual but automated work. --- scheduled task
+We will create a service called SentimentAnalysis & create a String method in it. Create a package called scheduler and make a class called UserScheduler in which the 
+method fetches the users & send email automatically.
+Autowire the SentimentAnalysisService, EmailService & UserRepoImpl
+
+For sending email automatically, we have to add an annotation to this method:
+@Scheduled(cron = "")   ---> it does the work for us automatically.
+By using cron in parameters, we tell that when this method has to run. Therefore you need to pass a cron expression. Like this:
+0 0 9 * * SUN   ---> 9am Every Sunday ( You can generate it through cron maker website )
+
+To run this, you also need to tell your SpringBootApplication that we are using some scheduling in our project. To do that, we add annotaion in main app:
+@EnableScheduling
+
+We are doing another thing that we are going to add appCache to this scheduler so it refreshes every 10 minutes through cron and if an API changes or something happens,
+we won't need to restart our springboot app because it is stored in local cache.
+(cron = "0 0/10 * ? * *")   --> this is cron for appCache.
+
+
+------------------------------------ LECTURE 38 -------------------------------------
+
+Create a package enums & create an enum in it containing HAPPY, SAD, ANGRY, ANXIOUS.
+
+We are going to be making a lot of changes in our code now... The github link will be provided of updated code, but I'll be editing most of it by self.
+We are deleting the SentimentAnalysisService and making changes in our UserScheduler class directly.
+
+Write test case as well in test package.
+Most of changes are already done and they were all in UserSceduler. What had to be done was as we had added a Sentiment enum, we will add to our journalEntry Entity too.
+Then we will map that Sentiment rather than using text or String to get the sentiments, count them, compare them and send email as per our cron job.
 
 
 
-
-
-
-
+------------------------------------ LECTURE 39 -------------------------------------
 
 

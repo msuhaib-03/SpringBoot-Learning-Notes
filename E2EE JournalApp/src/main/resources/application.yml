@@ -1,9 +1,63 @@
 spring:
-  profiles:
-    active: dev
+  data:
+    mongodb:
+      uri: mongodb+srv://sobi7:test1234@cluster0.ar8adhd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: journaldb
+      auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: muhammadsuhaib2805@gmail.com
+    password: tkju guyf dglg vxfn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /journal
+
+weather:
+  api:
+    key: "36cf53c9eeaed245d9798a0a38dd0e0b"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #logging:
 #  level:
 #    net:
 #      engineeringdigest:
 #        journalApp: DEBUG
+
+
+#spring.data.mongodb.port=27017
+#spring.data.mongodb.host=localhost
+#spring.data.mongodb.uri=mongodb+srv://muhammadsuhaib2805:wQ1OeNgvdP8VnIfA@cluster0.9wu5ofl.mongodb.net/journaldb?retryWrites=true&w=majority&appName=Cluster0
+
+#spring:
+#  profiles:
+#    active: dev
