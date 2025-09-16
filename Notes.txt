@@ -1014,4 +1014,75 @@ Then we will map that Sentiment rather than using text or String to get the sent
 
 ------------------------------------ LECTURE 39 -------------------------------------
 
+Redis is an open-source in-memory data store as cache, vector database, document database, streaming engine & message broker.
+Basically the need to use Redis is that for example, if there's a website that only takes user's ip and location that where the user is viewing the page from, will the 
+server load entire different new reload for every client that visits that site.? NO....
+It will store in RAM because it's faster and does its job in nano seconds than hard disk that is comparatively slower than RAM.
+We are not going to load entire pages and render the front-end and hit the backend for every user that visits. It will have to goto code and that http verb and then find
+the database, we don't have that much time.
+
+So to get everything, we will implement Radis in our code, so response is faster, and the backend when hits, first checks the radis, if information asked is available 
+there or not. We can't be using appCache for everything.
+The computation in first time using Radis will obviously take time but when a response is once generated, it goes through Redis and stores it, and it has a TTL field
+which helps in making an actual connection every few hours.
+
+Install radis. Now the thing is that radis is not officially made for Windows therefore first you have to install wsl.
+Goto powershell:
+wsl --install
+It will install Windows Subsystem For Linux.
+Now reboot your system so effect can be seen.
+Search WSL in your search bar and it will open wsl. Go for basic setup
+Set your username and password and you're good to go.
+Now check the documentation of redis for windows, do exactly as said for installing radis through your ubuntu.
+This are the commands you need to follow to run redis:
+
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+sudo apt-get update
+sudo apt-get install redis
+sudo service redis-server start
+redis-cli
+
+Test the connection by sending ping & reply must be PONG.
+
+Add dependency of Radis in pom.xml.
+We have to write radis properties in application.yml
+spring:
+  redis:
+    host: localhost
+    port: 6379
+
+RedisTemplate is use to interact with Redis. We are creating a test class to test Redis by autowiring RedisTemplate. A method is written to set and get the email.
+Serialization & Deserialization are not in sync now. Springboot & redis cli are currently not able to get or set anything because their serializers & deserializers
+arenot working together, to make them work they must be same.
+In SpringBoot we have to manually set serializer & deserializer.
+Therefore we will make a RedisConfig class in config package.
+Any method annotated with @Bean in a class, that class has to be annotated with @Configuration.
+We will write a method & RedisConnectionFactory is given as param in method whereas the method itself is a RedisTemplate. We set Key & Value Serializer.
+
+Response will be saved on first api hit to redis. It saves time and cost.
+We will create a RedisService and response is saved to Object. We can write POJO of Object as well. We will make a get & set method & also implement this in 
+WeatherService to hit that api in Redis-cli.
+By this: weather_of_Karachi ---> it gives all the info and its correct!!! :) 
+We are able to see JSON because we are setting key with JSON and it will get all the info.
+
+We are getting response on Redis-Cli by setting in our RedisService a& WeatherService from IntelliJ.
+We can set the key and get the reponse through debugging in our WeatherService following RedisService.
+Our API call doesn't hit now and the response is quick and returning POJO. it's effective and that's why it is used, it didn't even have to reach the API, everything
+was got by the RedisService and it displayed.
+
+RadisCloud can be used just like MongoDb Atlas and can be set in application.yml.
+
+
+------------------------------------ LECTURE 40 -------------------------------------
+
+Integrate Radis Cloud with Springboot Application.
+DIY   :)
+
+
+------------------------------------ LECTURE 41 -------------------------------------
+
+
+
+
 
