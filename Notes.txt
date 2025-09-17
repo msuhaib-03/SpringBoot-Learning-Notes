@@ -1,7 +1,8 @@
 
 NOTES WRITTEN BY MUHAMMAD SUHAIB
 LINKEDIN : linkedin.com/in/msuhaib-03/fsjavadev/
-mail: muhammadsuhaib2805@gmail.com
+GITHUB: github.com/msuhaib-03
+Gmail: muhammadsuhaib2805@gmail.com
 
 
 
@@ -1081,6 +1082,89 @@ DIY   :)
 
 
 ------------------------------------ LECTURE 41 -------------------------------------
+
+We will cover Kafka in this lecture....
+Open source distributed event streaming platform ---> Can run on multiple serves(machines are connected).
+KAFKA is designed to handle data that is constantly being generated and needs to be processed as it comes in, without delays.
+It ensures flow of data from source to destination smoothly.
+For Example Social media platform where people are adding posts, liking, commenting. It's realtime and needs to be seen by all constantly. Kafka comes into play.
+Saves API calls. 
+It has asynchronousity. Scalability is achieved here as the data is distributed across multiple servers running parallel to handle millions of requests.
+
+Kafka clusters: group of kafka brokers ( server where kafka is running i.e multiple servers running kafka)
+Kafka producer: writes new data in kafka cluster.
+Kafka consumer: retrieves data from kakfa cluster.
+Zoo keper: keeps track of kafka cluster health.
+Kafka connect: source & sink ( data can be retrieved without writing any code i.e declarative integration. From source to cluster & vice versa to sink )
+Kafka stream: used to transform data.
+
+Goto this site:
+https://kafka.apache.org/downloads  --> And download the latest kafka .bin file. Extract the zip file to any folder.
+
+You can open command line in your kafka folder and goto 
+cd Windows and can run any file you want. We will run zookeeper so command is like this:
+zookeeper-server-start.bat ..\..\config\zookeeper.properties --> and it runs on port 2181
+
+Another command to be run on another terminal:
+kafka-server-start.bat ..\..\config.server.properties  ---> it will start kafka broker
+
+Open 3 more cmd and run the command, one for topic creation, one for writing into topic--> data produce & one for getting from topic --> data consume:
+kafka-topics.bat --create --topic my-topic --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-topic --from-beginning
+
+Topic is just like a table where we store similar data.
+Now anything you write in the topic will instantly be displayed in consumer cmd.
+
+KAFKA TOPIC:
+Named container for similar events. Unique identifier of a topic is its name.
+Student opic will have related data. Food topic will have related data.
+They are like tables in a database.
+They live inside a broker.
+Producer produce a message into topic ( ultimately to partitions in round robin fashion ) or directly to partitions. Consumer poll continuously for new messages using 
+the topic name.
+
+Partition: A topic is partitioned and distributed to kafka brokers in round robin fashion to achieve distributed system.
+Replication Factor: A partition is replicated by this factor and it is replicated in another broker to prevent fault tolerance.
+
+Producer ----> Topic ----> Partition
+
+PARTITIONS:
+A topic is split into several parts and known as partitions of the topic.
+Partition is where actually the message is located inside the topic.
+Therefore while creating the topic, we need to specify the number of partitions ( it is arbitrary and can be changed later)
+Each partition is an ordered, immutable sequence of records.
+Each partition is independent of each other.
+Each message gets stored into partitions with an incremental id knows as its offset value.
+Ordering is there only at partiton level
+Partition continuously grows.( offset increases) as new records are produced.
+All the records exist in distribuuted file log.
+
+If message is sent without key, data will be saved in partitons as round robin so consumer doesn't get message in sequence.
+As ordering is done at partition level, so in sequence it can be stored in only 1 partition with help of partitioner which checks for key and applies hashing with data.
+Same key --> Same partition
+Two things ----> key & value, key is optional
+We can send message with or without key.
+
+When sending data with key, order will be maintained as they will be in the same partition.
+Without key we cannot guarantee the ordering of messages as consumer poll the messages from all the partitions at the same time.
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic --property "key.separator=-" --property "parse.key=true"
+kafka-console-consumer.bat --broker-list localhost:9092 --topic my-topic --from-beginning -property "key.separator=-" --property "print.key=false"
+
+hello - apple
+hello - mango
+hello - kiwi
+These are with keys: hello is key, and rest is message.
+bye- guava
+bye - banana
+
+All these will appear in consumer as ordered because they are stored in different partitions in Topic due to their different keys.
+
+
+
+
+
 
 
 
