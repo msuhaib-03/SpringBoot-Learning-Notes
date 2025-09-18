@@ -1106,7 +1106,7 @@ cd Windows and can run any file you want. We will run zookeeper so command is li
 zookeeper-server-start.bat ..\..\config\zookeeper.properties --> and it runs on port 2181
 
 Another command to be run on another terminal:
-kafka-server-start.bat ..\..\config.server.properties  ---> it will start kafka broker
+kafka-server-start.bat ..\..\config\server.properties  ---> it will start kafka broker
 
 Open 3 more cmd and run the command, one for topic creation, one for writing into topic--> data produce & one for getting from topic --> data consume:
 kafka-topics.bat --create --topic my-topic --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
@@ -1150,7 +1150,7 @@ When sending data with key, order will be maintained as they will be in the same
 Without key we cannot guarantee the ordering of messages as consumer poll the messages from all the partitions at the same time.
 
 kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic --property "key.separator=-" --property "parse.key=true"
-kafka-console-consumer.bat --broker-list localhost:9092 --topic my-topic --from-beginning -property "key.separator=-" --property "print.key=false"
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-topic --from-beginning -property "key.separator=-" --property "print.key=false"
 
 hello - apple
 hello - mango
@@ -1160,8 +1160,60 @@ bye- guava
 bye - banana
 
 All these will appear in consumer as ordered because they are stored in different partitions in Topic due to their different keys.
+And they are going to be in different partitions as their group ids will be different as if more consumers are created in a group, they will hold an offset as well.
+
+CONSUMER OFFSET & CONSUMER GROUPS:
+Position of a consumer in a specific partition of a topic. It represents the latest message, consumer has read.
+When a consume group reads a messgae from topic, each member of the group maintains its own offset and updates it as it consumes messages.
+__consumer_offset --> built-in topic that keeps track of latest offset committed for each position of each consume rgroup.
+The topic is internal to Kafka cluster & not meant to be read or written to directly by clients. Instead, the offset information is stored in the topic and updated by
+ the Kafka broker to reflect the position of each consumer in each partition.
+The information consumer offset is used by Kafka to maintain the reliability of the consumer groups and to ensure that messages are not lost or duplicated.
+
+No of consumer group = No of consumer offset
+The __consumer_offset topic is used to store the current offset to each consumer in each partition for a given consumer group. Each consumer group updates its own offset
+for the partitions it is asigned in the consumer offset topic.
+
+When a consumer join a consumer group, it sends a join request to the group co-ordinator. The group co-ordinator determines which partitions the consumer should be
+assigned based on the number of consumers in the group and the current assignment of partitions to consumers. Group co-ordinator then sends a new assignment of partitions
+to the consumer, which includes the set of partitions that the consumer is responsible for consuming. The consumer starts consuming data from the assigned partitions.
+Consumers in a consumer group are always assigned partitions in a sticky-fashion. Same partitions are given to a specific consumer from group until unless it leaves.
+
+SEGMENT COMMIT LOGS & RETENTION:
+There's a topic and topic has partitions, each partitions has messages, and one set of message is called a segment. ( we can define segment size )
+Messages are stored in commit log actually which is present in our filesystem, in our server.properties, there's a directory of commit log, this is where actual messages
+are stored. tmp/kafka_logs --> .log ( commit logs, actual data that kafka producer produces )
+Size & Time-based retention policy. 
+Log files are encoded, and kafka cleaner is always running in background making sure that if policy meet, it either deletes the oldest data or after some time deletes the
+data and new file is also auto-generated when a segment size is reached.
+
+KAFKA BROKERS:
+We can create 2 copies of server.properties from config and change their port while kafka server port remains same for all so that they know that they are part of cluster.
+name the copies 1 and 2 and also change their broker ids by making them unique. Also change the name of their log files within vs code.
+Goto bin and open 2 cmd and start server using your 2 properties files.
+
+Now we will create topic with 3 replication factor & 3 partitions.
+Now kafka has 3 brokers( 3 kafka server instances ) & 3 partitions in the topic. Data goes to 1 broker and it is sent to rest of brokers as well for fault tolerance.
+In case a broker goes down, consumer can get from other 2 brokers. Replication factor gives fault-tolerance. 
+Leader is decided at partition level
+
+Now create a kafka topic with all the servers you just created:
+kafka-topics.bat --create --topic my-gadgets --bootstrap-server localhost:9092, localhost:9093, localhost:9094 --replication-factor 3 --partitions 3
+
+Now run a producer and consumer with same all 3 servers and give some values.
+Now check your C:\tmp/kafka-logs, 1 & 2, data is sent to all 3 brokers.
 
 
+
+
+
+
+
+
+
+
+
+ 
 
 
 
