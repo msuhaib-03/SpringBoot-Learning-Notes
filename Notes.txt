@@ -1201,19 +1201,67 @@ Now create a kafka topic with all the servers you just created:
 kafka-topics.bat --create --topic my-gadgets --bootstrap-server localhost:9092, localhost:9093, localhost:9094 --replication-factor 3 --partitions 3
 
 Now run a producer and consumer with same all 3 servers and give some values.
+kafka-console-producer.bat --broker-list localhost:9092, localhost:9093, localhost:9094 --topic my-gadgets
+kafka-console-consumer.bat --bootstrap-server localhost:9092, localhost:9093, localhost:9094 --topic my-gadgets --from-beginning
 Now check your C:\tmp/kafka-logs, 1 & 2, data is sent to all 3 brokers.
 
+kafka-topics.bat --describe gadets --bootstrap-server localhost:9092, localhost:9093, localhost:9094     ---> This shows the in-sync replica, leader & replicas.
 
+INTEGRATION WITH SPRING BOOT:
+As we don't need to make a mess in our local system, therefore we will use Kafka cloud through Confluent Cloud: Fully Managed Kafka as a service.
+Make an account, go through setup similar to other cloud platforms.
+As its service is paid, therefore I'm unable to create a cluster, but we will still go through the steps...
+cluster_0 is created, click and then goto topics, add a topic name it: weekly_sentiment and default partitions.
+Click on your topic name, then configure a client, select springboot, give your topic name. Then below there's a property panel given, you have to exactly paste it in
+your application.properties or application.yml
 
+Goto pom.xml and paste this dependency:
+<dependency>
+	<groupId>org.springframework.kafka</groupId>
+	<artifactId>spring-kafka</artifactId>
+</dependency>
 
+Now create Kafka cluster API key, it's secret --> both of them have to be placed in that file beside it...
+Now we have to write a yml from that file from cluster:
+  kafka:
+    bootstrap-servers:
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      consumer:
+        group-id: weekly-sentiment-group
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        properties:
+          spring:
+            json:
+              trusted:
+                packages: net.engineeringdigest.journapApp.model
+      properties:
+        security:
+          protocol: SASL_SSL
+          sasl:
+            mechanism: PLAIN
+            jaas:
+              config: org.apache.kafka.common.security.plain.PlainLoginModule required username='' password'';
+          session:
+            timeout:
+              ms: 45000
 
+Consumer sends signal to broker, if in 45 seconds, consumer doesn't send signal to broker, kafka will send it to another consumer.
+What can be done now is that you can Autowire Kafkatemplate in your UserScheduler.java class and use it to send email.
 
+You can create a SentimentConsumerService and autowire EmailService.
+Use @KafkaListener(topics="weekly-sentiments", groupId="weekly-sentiment-group")
+make a method consume with SentimentData as param and sendEmail(sentimentData) in body
+Below that make a sendEmail method with same param as above and use emailService.sendEmail(sentimentData.getEmail(),"Sentiment for week", sentimentData.getSentiment();
 
+Make a SentimentData class with email & sentiment as variables.
 
-
-
-
+Check the weekly-sentiment in messages in your confluent, messages will be there and check your email and it will be there too.
  
+
+------------------------------------ LECTURE 42 -------------------------------------
 
 
 
