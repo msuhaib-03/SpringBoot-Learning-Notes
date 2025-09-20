@@ -18,12 +18,32 @@ public class UserDetailsServerImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUserName(username);
         if (user != null) {
-            return org.springframework.security.core.userdetails.User.builder()
+            System.out.println("=== USER LOADING DEBUG ===");
+            System.out.println("Username: " + user.getUserName());
+            System.out.println("Roles from DB: " + user.getRoles());
+            System.out.println("Roles size: " + (user.getRoles() != null ? user.getRoles().size() : "null"));
+            System.out.println("==========================");
+
+            UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUserName())
                     .password(user.getPassword())
-                    .roles(user.getRoles().toArray(new String[0]))
+                    .roles(user.getRoles() != null ? user.getRoles().toArray(new String[0]) : new String[]{"USER"})
                     .build();
+
+            System.out.println("Final Authorities: " + userDetails.getAuthorities());
+            return userDetails;
         }
         throw new UsernameNotFoundException("User not found with username:" + username);
     }
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepo.findByUserName(username);
+//        if (user != null) {
+//            return org.springframework.security.core.userdetails.User.builder()
+//                    .username(user.getUserName())
+//                    .password(user.getPassword())
+//                    .roles(user.getRoles().toArray(new String[0]))
+//                    .build();
+//        }
+//        throw new UsernameNotFoundException("User not found with username:" + username);
+//    }
 }

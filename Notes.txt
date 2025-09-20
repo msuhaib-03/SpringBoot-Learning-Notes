@@ -1317,11 +1317,26 @@ Token can be removed by client locally.
 ------------------------------------ LECTURE 43 -------------------------------------
 
 
+What if Kafka fallsback??
+
+Changing will be done only if you are using the paid version,  because it's not working with free version ,therefore no need to work on this!!
+Directly mails can be send direct from personal mail.
+It's called Fallback mechanism...
 
 
+------------------------------------ LECTURE 44 -------------------------------------
 
+Deploying our Springboot application on cloud.
+AWS provides you VMs where you can run your apps.
+But we will deploy on Heroku. ---> It simplifies things.
+Create an account on Heroku and do the MFA through SalesForce Authenticator.
+Now add a payment method, just save details   ---->  if not then just follow the steps or lecture if want to deploy later sometime for someone.
 
+Payment of 1$ through Nayapay card.
+Now goto main page, scroll down to select java. Now you have to install Heroku cli through git bash. ( Download git if not installed)
+Download Heroku installer. After installing heroku, either goto cmd or git and type heroku login & pres any key to move to browser for login.
 
+Now goto your github repo of your project and create a fork.
 
 
 

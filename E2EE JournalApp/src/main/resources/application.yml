@@ -5,6 +5,33 @@ spring:
       database: journaldb
       auto-index-creation: true
 
+
+
+#  kafka:
+#    bootstrap-servers:
+#      producer:
+#        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      consumer:
+#        group-id: weekly-sentiment-group
+#        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#        properties:
+#          spring:
+#            json:
+#              trusted:
+#                packages: net.engineeringdigest.journapApp.model
+#      properties:
+#        security:
+#          protocol: SASL_SSL
+#          sasl:
+#            mechanism: PLAIN
+#            jaas:
+#              config: org.apache.kafka.common.security.plain.PlainLoginModule required username='' password'';
+#          session:
+#            timeout:
+#              ms: 45000
+
   redis:
     host: localhost
     port: 6379
@@ -36,6 +63,9 @@ weather:
 
 
 
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 
 
