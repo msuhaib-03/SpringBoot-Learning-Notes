@@ -1336,14 +1336,44 @@ Payment of 1$ through Nayapay card.
 Now goto main page, scroll down to select java. Now you have to install Heroku cli through git bash. ( Download git if not installed)
 Download Heroku installer. After installing heroku, either goto cmd or git and type heroku login & pres any key to move to browser for login.
 
-Now goto your github repo of your project and create a fork.
+Now goto your github repo of your project and create a fork. ( If you don't own the project, owner cannot create a fork or if not a part of an organization )
+Now open git bash in your project. Type: git push origin main   ( It will say everything up to date if updated project is there)
+Now type in git: heroku create ---> It will create app on heroku. It will give a URL where your application will be hosted. Now we can use that link in Postman instead
+of using localhost.
+Now another URL is given, it is used when code has to be pushed to heroku ( on cloud directly )  --> Remote repo on Git & Heroku
+git remote --v  ---> Tell about repo on remote locations
+
+Now type:
+git push heroku main
+
+Do this if remote not created because there was no fork:
+$ git remote add heroku https://git.heroku.com/safe-stream-41612.git
+$ heroku buildpacks:set heroku/java
+$ heroku update
+
+Change the values to placeholders in your application.yml
+heroku config:set SERVER_PORT=8081
+Make sure all variables' values are set in app.yml like this:
+key: ${WEATHHER_API}S and all other where we set the values by ourselves.
+You can create key,value in your cloud rather than through git or from your intelliJ code.
+
+Now in postman, give our url of heroku app/public/login...
+Domain instead of localhost:8080
+Now you can't be switching between 2 domains, local or cloud so in postman you can create environments, local and prod in which you can give domain's initial and current
+value so that you can run on your cloud and local as well
+Now open any get call and select environment and in the call you give the environment like this:
+{{domain}}/public/health-check
+
+Heroku captures same error in logs as git console.'
+heroku logs --tail
+
+Now when you goto your app dashboard on heroku, goto settings and check logs too...
+You can scroll down and see the URL, which means you can give a domain name to it by setting a path in your journalApp by creating another controller.
 
 
+------------------------------------ LECTURE 45 -------------------------------------
 
-
-
-
-
+Swagger is used for documentation of APIs.
 
 
 
